@@ -3,6 +3,17 @@ const express = require('express')
 const router = express.Router()
 const connection = require('../database/Connection')
 const nodemailer = require('nodemailer');
+const jwtVerify = require('../middleware/jwtAuth')
+
+/* VARIFY JWT */
+router.get('/verifyJwt', jwtVerify, async (req, res) => {
+
+    try {
+        res.status(200).send({success: 'success add root config'})        
+    } catch (error) {
+        return []
+    }
+});
 
 //#region CREATE
 router.post(`/create`, async (req, res) => {
@@ -33,7 +44,7 @@ router.post(`/create`, async (req, res) => {
 
 //#region READ
 // http://localhost:3001/users/getfields?fields=FirstName,LastName
-router.get(`/getfields`, async (req, res) => {    
+router.get(`/getfields`, jwtVerify,  async (req, res) => {    
     const { fields } =  req.query
     
     try {
