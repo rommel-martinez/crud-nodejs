@@ -112,7 +112,38 @@ router.get(`/delete`, async (req, res) => {
 })
 //#endregion
 
+//#region EMAIL
+router.post(`/sendmail`, (req, res) => {
+    const { subject, text } = req.query
 
+    var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    //   port: 587,
+    //   secure: true,
+    auth: {
+        user: 'test@gmail.com',
+        pass: 'idbe dttl eebn tish'
+    }
+    });
 
+    var mailOptions = {
+    from: 'rommelvmartinez@gmail.com',
+    to: 'rommelvmartinez@gmail.com',
+    subject: subject,
+    text: text
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        res.status(500).send({
+            message: error
+        })
+    } else {
+        res.status(200).send(info.response)
+    }
+    });    
+})
+//#endregion
 
 module.exports = router
